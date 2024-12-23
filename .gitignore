@@ -11,6 +11,16 @@
 # production
 /build
 
+# .env files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Storyblok files
+.storyblok/
+
 # misc
 .DS_Store
 .env.local

@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { fetchStoryContent } from "./services/api";
+import ContentBlock from './components/ContentBlock';
 
-function App() {
+const App = () => {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      const slug = 'landing-page';
+      const story = await fetchStoryContent(slug);
+      setContent(story);
+      setLoading(false);
+    };
+
+    fetchContent();
+  }, []);
+
+  if(loading) {
+    return <div>Loading...</div>
+  }
+
+  if(!content) {
+    return <div>Error loading content.</div>;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>{content.name}</h1>
+      {content.content.body.map((block, index) => (
+        <ContentBlock key={index} content={block} />
+      ))}
     </div>
   );
-}
+
+};
 
 export default App;
